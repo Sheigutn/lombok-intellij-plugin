@@ -8,6 +8,7 @@ import com.intellij.psi.impl.CheckUtil;
 import com.intellij.psi.impl.light.LightMethodBuilder;
 import com.intellij.psi.impl.light.LightModifierList;
 import com.intellij.psi.impl.light.LightTypeParameterListBuilder;
+import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.util.IncorrectOperationException;
 import de.plushnikov.intellij.plugin.icon.LombokIcons;
 import de.plushnikov.intellij.plugin.util.ReflectionUtil;
@@ -28,6 +29,8 @@ public class LombokLightMethodBuilder extends LightMethodBuilder {
   private PsiCodeBlock myBodyCodeBlock;
   // used to simplify comparing of returnType in equal method
   private String myReturnTypeAsText;
+  private boolean isExtension;
+  private PsiDocComment psiDocComment;
 
   public LombokLightMethodBuilder(@NotNull PsiManager manager, @NotNull String name) {
     super(manager, JavaLanguage.INSTANCE, name,
@@ -238,6 +241,11 @@ public class LombokLightMethodBuilder extends LightMethodBuilder {
     return null == myPsiMethod ? PsiElement.EMPTY_ARRAY : myPsiMethod.getChildren();
   }
 
+  @Override
+  public PsiDocComment getDocComment() {
+    return this.psiDocComment;
+  }
+
   public String toString() {
     return "LombokLightMethodBuilder: " + getName();
   }
@@ -304,5 +312,19 @@ public class LombokLightMethodBuilder extends LightMethodBuilder {
   @Override
   public void checkDelete() throws IncorrectOperationException {
     // simple do nothing
+  }
+
+  public boolean isExtension() {
+    return isExtension;
+  }
+
+  public LombokLightMethodBuilder withExtension(boolean isExtension) {
+    this.isExtension = isExtension;
+    return this;
+  }
+
+  public LombokLightMethodBuilder withDocComment(PsiDocComment docComment) {
+    this.psiDocComment = docComment;
+    return this;
   }
 }

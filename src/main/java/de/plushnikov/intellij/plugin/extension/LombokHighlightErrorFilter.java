@@ -14,6 +14,7 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiMethodReferenceExpression;
 import com.intellij.psi.PsiModifierListOwner;
 import com.intellij.psi.util.PsiTreeUtil;
+import de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodHandler;
 import de.plushnikov.intellij.plugin.handler.BuilderHandler;
 import de.plushnikov.intellij.plugin.handler.EqualsAndHashCodeCallSuperHandler;
 import de.plushnikov.intellij.plugin.handler.LazyGetterHandler;
@@ -181,8 +182,8 @@ public class LombokHighlightErrorFilter implements HighlightInfoFilter {
 
       @Override
       public boolean accept(@NotNull PsiElement highlightedElement) {
-        return !LazyGetterHandler.isLazyGetterHandled(highlightedElement)
-          || !LazyGetterHandler.isInitializedInConstructors(highlightedElement);
+        return !ExtensionMethodHandler.isFirstParameterDeemedNotNull(highlightedElement) &&
+          (!LazyGetterHandler.isLazyGetterHandled(highlightedElement) || !LazyGetterHandler.isInitializedInConstructors(highlightedElement));
       }
     },
 

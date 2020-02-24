@@ -153,14 +153,26 @@
     <renamePsiElementProcessor
       implementation="de.plushnikov.intellij.plugin.extension.LombokRenameFieldReferenceProcessor"/>
 
+    <localInspection groupPath="Java" language="JAVA"
+                     displayName="Lombok extension method not resolved"
+                     groupKey="group.names.probable.bugs"
+                     groupBundle="messages.InspectionsBundle"
+                     enabledByDefault="true" level="ERROR"
+                     implementationClass="de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodCallSiteInspection" />
+    <annotator language="JAVA" implementationClass="de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodCallSiteAnnotator"/>
+    <java.elementFinder implementation="de.plushnikov.intellij.plugin.extensionmethod.LombokExtensionMethodElementFinder" order="first"/>
     <java.elementFinder implementation="de.plushnikov.intellij.plugin.extension.LombokElementFinder" order="last"/>
 
     <inlineActionHandler implementation="de.plushnikov.intellij.plugin.action.inline.LombokInlineMethodHandler"/>
 
     <canBeFinal implementation="de.plushnikov.intellij.plugin.extension.LombokCanBeFinalHandler"/>
 
+    <codeInsight.lineMarkerProvider language="JAVA"
+                                    implementationClass="de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodLineMarkerProvider"/>
+
     <codeInsight.template.postfixTemplateProvider language="JAVA"
                                                   implementationClass="de.plushnikov.intellij.plugin.extension.postfix.LombokPostfixTemplateProvider"/>
+
   </extensions>
 
   <actions>

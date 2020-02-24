@@ -14,4 +14,6 @@ public class LombokIcons {
   public static final Icon METHOD_ICON = load("/icons/nodes/lombokMethod.png");
 
   public static final Icon CONFIG_FILE_ICON = load("/icons/config.png");
+
+  public static final Icon PUZZLE_ICON = load("/icons/puzzle.svg");
 }
