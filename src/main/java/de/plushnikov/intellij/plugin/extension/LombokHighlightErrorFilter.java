@@ -182,7 +182,7 @@ public class LombokHighlightErrorFilter implements HighlightInfoFilter {
 
       @Override
       public boolean accept(@NotNull PsiElement highlightedElement) {
-        return !ExtensionMethodHandler.isFirstParameterDeemedNotNull(highlightedElement) &&
+        return !ExtensionMethodHandler.isFirstParameterDeemedNullable(highlightedElement) &&
           (!LazyGetterHandler.isLazyGetterHandled(highlightedElement) || !LazyGetterHandler.isInitializedInConstructors(highlightedElement));
       }
     },

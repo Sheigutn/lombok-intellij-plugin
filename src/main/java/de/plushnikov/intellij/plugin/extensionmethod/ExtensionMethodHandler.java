@@ -11,7 +11,7 @@ import de.plushnikov.intellij.plugin.psi.LombokLightMethodBuilder;
 
 public class ExtensionMethodHandler {
 
-  public static boolean isFirstParameterDeemedNotNull(PsiElement psiElement) {
+  public static boolean isFirstParameterDeemedNullable(PsiElement psiElement) {
     PsiMethodCallExpression psiMethodCallExpression = getMethodCallExpression(psiElement);
     if (psiMethodCallExpression == null) {
       return false;
