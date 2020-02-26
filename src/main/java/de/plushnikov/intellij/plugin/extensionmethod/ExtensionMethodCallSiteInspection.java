@@ -40,15 +40,15 @@ public class ExtensionMethodCallSiteInspection extends AbstractBaseJavaLocalInsp
           return;
         }
 
-        PsiAnnotation annotation = parentClass.getAnnotation(EXTENSION_METHOD_ANNOTATION_FQN);
+        PsiAnnotation psiAnnotation = parentClass.getAnnotation(EXTENSION_METHOD_ANNOTATION_FQN);
 
-        if (annotation == null) {
+        if (psiAnnotation == null) {
           annotateMethodCall(psiMethodCallExpression, holder);
           return;
         }
 
         PsiType[] typesInAnnotation = PsiAnnotationUtil
-          .getAnnotationValues(parentClass.getAnnotation(EXTENSION_METHOD_ANNOTATION_FQN), "value", PsiType.class)
+          .getAnnotationValues(psiAnnotation, "value", PsiType.class)
           .toArray(PsiType.EMPTY_ARRAY);
 
         PsiMethod referencedMethod = ((PsiMethod) lombokLightMethodBuilder.getNavigationElement());

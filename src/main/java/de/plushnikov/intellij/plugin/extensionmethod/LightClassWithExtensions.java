@@ -103,14 +103,6 @@ public class LightClassWithExtensions extends LightClass {
           .withNavigationElement(staticMethod)
           .withModifier(getAllModifiers(staticMethod, PsiModifier.STATIC))
           .withModifier(PsiModifier.FINAL);
-          methodBuilder.withBody(
-            JavaPsiFacade.getElementFactory(getProject()).createCodeBlockFromText(
-              String.format("%s.%s(%s);",
-                staticMethod.getContainingClass().getQualifiedName(),
-                staticMethod.getName(),
-                Arrays.stream(staticMethod.getParameterList().getParameters()).map(PsiParameter::getName).collect(Collectors.joining(","))
-              ), methodBuilder)
-          );
 
         for (int i = 1; i < psiParameterList.getParametersCount(); i++) {
           PsiParameter parameterAtIndex = psiParameterList.getParameter(i);

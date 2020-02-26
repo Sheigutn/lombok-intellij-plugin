@@ -159,7 +159,7 @@
                      groupBundle="messages.InspectionsBundle"
                      enabledByDefault="true" level="ERROR"
                      implementationClass="de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodCallSiteInspection" />
-    <annotator language="JAVA" implementationClass="de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodCallSiteAnnotator"/>
+    <!--<annotator language="JAVA" implementationClass="de.plushnikov.intellij.plugin.extensionmethod.ExtensionMethodCallSiteAnnotator"/>-->
     <java.elementFinder implementation="de.plushnikov.intellij.plugin.extensionmethod.LombokExtensionMethodElementFinder" order="first"/>
     <java.elementFinder implementation="de.plushnikov.intellij.plugin.extension.LombokElementFinder" order="last"/>
 

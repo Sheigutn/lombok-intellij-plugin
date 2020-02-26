@@ -1,6 +1,7 @@
 package de.plushnikov.extensionmethod;
 
 import lombok.experimental.ExtensionMethod;
+import lombok.val;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +10,18 @@ import java.util.List;
 public class ExtensionMethodPlain {
   public String test() {
     int[] intArray = {5, 3, 8, 2};
-    intArray.sort();
     float[] intArray2 = {5, 3, 8, 2};
     Integer[] integerArray = new Integer[0];
-    intArray2.sort();
-    intArray.or();
+    val test1 = "".or("Test");
 
     String iAmNull = null;
     List<String> test = new ArrayList<>();
-    test.
 
     return iAmNull.or("hELlO, WORlD!".toTitleCase());
   }
 
   static class Extensions {
+
     public static <T> T or(T obj, T ifNull) {
       return obj != null ? obj : ifNull;
     }
@@ -37,5 +36,11 @@ public class ExtensionMethodPlain {
     public static <T> List<T> test(List<T> testParameter) {
       return testParameter;
     }
+  }
+}
+
+class Test2 {
+  public static void main(String[] args) {
+    String test = "".or("test");
   }
 }

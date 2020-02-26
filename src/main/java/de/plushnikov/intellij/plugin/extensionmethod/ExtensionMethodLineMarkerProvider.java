@@ -60,7 +60,7 @@ public class ExtensionMethodLineMarkerProvider extends LineMarkerProviderDescrip
   @Nullable("null means disabled")
   @Override
   public String getName() {
-    return "Reference to extension method call";
+    return "Extension method call";
   }
 
   @Nullable
@@ -69,12 +69,12 @@ public class ExtensionMethodLineMarkerProvider extends LineMarkerProviderDescrip
     return LombokIcons.PUZZLE_ICON;
   }
 
-  private static class ExtensionMethodCallMarkerInfo extends LineMarkerInfo<PsiElement> {
+  private class ExtensionMethodCallMarkerInfo extends LineMarkerInfo<PsiElement> {
     private ExtensionMethodCallMarkerInfo(@NotNull PsiElement psiElement, TextRange textRange) {
       super(psiElement,
         textRange,
         LombokIcons.PUZZLE_ICON,
-        FunctionUtil.constant("Reference to extension method call"),
+        FunctionUtil.constant(ExtensionMethodLineMarkerProvider.this.getName()),
         null,
         GutterIconRenderer.Alignment.RIGHT
       );
