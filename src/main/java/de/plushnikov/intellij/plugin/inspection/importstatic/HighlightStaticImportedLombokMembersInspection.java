@@ -53,16 +53,20 @@ public class HighlightStaticImportedLombokMembersInspection extends AbstractBase
 
   private static class AddOnDemandStaticImportQuickFix implements LocalQuickFix {
 
-    private final PsiImportStaticReferenceElement reference;
+    private final SmartPsiElementPointer<PsiImportStaticReferenceElement> referencePointer;
 
     public AddOnDemandStaticImportQuickFix(PsiImportStaticReferenceElement reference) {
-      this.reference = reference;
+      this.referencePointer = SmartPointerManager.createPointer(reference);
     }
 
     @Nls(capitalization = Nls.Capitalization.Sentence)
     @NotNull
     @Override
     public String getName() {
+      PsiImportStaticReferenceElement reference = referencePointer.getElement();
+      if (reference == null || reference.getQualifier() == null) {
+        return getFamilyName();
+      }
       return "Add static import for " + reference.getQualifier().getText() + ".*";
     }
 
@@ -76,7 +80,8 @@ public class HighlightStaticImportedLombokMembersInspection extends AbstractBase
     @Override
     public void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
       PsiElement toProcess;
-      if ((toProcess = reference.getFirstChild()) != null && (toProcess = toProcess.getFirstChild()) != null) {
+      PsiImportStaticReferenceElement reference = referencePointer.getElement();
+      if (reference != null && (toProcess = reference.getFirstChild()) != null && (toProcess = toProcess.getFirstChild()) != null) {
         new AddOnDemandStaticImportAction().invoke(project, null, toProcess);
         reference.getParent().delete();
       }
