@@ -161,6 +161,13 @@
     <canBeFinal implementation="de.plushnikov.intellij.plugin.extension.LombokCanBeFinalHandler"/>
 
     <localInspection
+      displayName="Highlight statically imported Lombok members"
+      groupName="Lombok"
+      shortName="HighlightStaticImportedLombokMembers"
+      enabledByDefault="true"
+      implementationClass="de.plushnikov.intellij.plugin.inspection.importstatic.HighlightStaticImportedLombokMembersInspection"/>
+
+    <localInspection
       displayName="Lombok annotations"
       groupName="Lombok"
       shortName="Lombok"
