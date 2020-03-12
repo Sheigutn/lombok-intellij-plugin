@@ -1,13 +1,6 @@
 package de.plushnikov.intellij.plugin.handler;
 
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiIdentifier;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiReferenceExpression;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.siyeh.ig.psiutils.InitializationUtils;
 import org.jetbrains.annotations.NotNull;
@@ -17,11 +10,17 @@ import de.plushnikov.intellij.plugin.util.PsiAnnotationUtil;
 
 public class LazyGetterHandler {
 
-  public static boolean isLazyGetterHandled(@NotNull PsiElement element) {
+  public static final String ACTUAL_FIELD_TYPE = "java.util.concurrent.atomic.AtomicReference<java.lang.Object>";
+
+  public static boolean isLazyGetterIdentifierHandled(@NotNull PsiElement element) {
     if (!(element instanceof PsiIdentifier)) {
       return false;
     }
-    PsiField field = PsiTreeUtil.getParentOfType(element, PsiField.class);
+    return isLazyGetterHandled(element);
+  }
+
+  public static boolean isLazyGetterHandled(@NotNull PsiElement element) {
+    PsiField field = PsiTreeUtil.getNonStrictParentOfType(element, PsiField.class);
     if (field == null) {
       return false;
     }

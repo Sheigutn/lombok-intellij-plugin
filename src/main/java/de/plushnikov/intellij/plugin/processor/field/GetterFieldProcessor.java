@@ -1,24 +1,13 @@
 package de.plushnikov.intellij.plugin.processor.field;
 
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiModifier;
-import com.intellij.psi.PsiModifierList;
-import com.intellij.psi.PsiType;
+import com.intellij.psi.*;
 import de.plushnikov.intellij.plugin.problem.ProblemBuilder;
 import de.plushnikov.intellij.plugin.processor.LombokPsiElementUsage;
 import de.plushnikov.intellij.plugin.psi.LombokLightMethodBuilder;
 import de.plushnikov.intellij.plugin.quickfix.PsiQuickFixFactory;
 import de.plushnikov.intellij.plugin.thirdparty.LombokUtils;
-import de.plushnikov.intellij.plugin.util.LombokProcessorUtil;
-import de.plushnikov.intellij.plugin.util.PsiAnnotationSearchUtil;
-import de.plushnikov.intellij.plugin.util.PsiAnnotationUtil;
-import de.plushnikov.intellij.plugin.util.PsiClassUtil;
-import de.plushnikov.intellij.plugin.util.PsiMethodUtil;
+import de.plushnikov.intellij.plugin.util.*;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -67,6 +56,10 @@ public class GetterFieldProcessor extends AbstractFieldProcessor {
       if (null == psiField.getInitializer()) {
         builder.addError("'lazy' requires field initialization.");
         result = false;
+      }
+      if (psiField.hasModifierProperty(PsiModifier.TRANSIENT)) {
+        builder.addError("'lazy' is not supported on transient fields.",
+          PsiQuickFixFactory.createModifierListFix(psiField, PsiModifier.TRANSIENT, false, false));
       }
     }
 
@@ -120,8 +113,15 @@ public class GetterFieldProcessor extends AbstractFieldProcessor {
   public PsiMethod createGetterMethod(@NotNull PsiField psiField, @NotNull PsiClass psiClass, @NotNull String methodModifier) {
     final String methodName = LombokUtils.getGetterName(psiField);
 
+    PsiTypeElement fieldTypeElement = psiField.getTypeElement();
+    PsiType getterType = psiField.getType();
+
+    if (fieldTypeElement != null && fieldTypeElement.isInferredType()) {
+      getterType = JavaPsiFacade.getElementFactory(psiField.getProject()).createTypeElementFromText(fieldTypeElement.getText(), fieldTypeElement).getType();
+    }
+
     LombokLightMethodBuilder methodBuilder = new LombokLightMethodBuilder(psiField.getManager(), methodName)
-      .withMethodReturnType(psiField.getType())
+      .withMethodReturnType(getterType)
       .withContainingClass(psiClass)
       .withNavigationElement(psiField);
     if (StringUtil.isNotEmpty(methodModifier)) {

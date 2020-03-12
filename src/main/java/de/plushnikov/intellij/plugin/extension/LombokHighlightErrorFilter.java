@@ -149,7 +149,7 @@ public class LombokHighlightErrorFilter implements HighlightInfoFilter {
 
       @Override
       public boolean accept(@NotNull PsiElement highlightedElement) {
-        return !LazyGetterHandler.isLazyGetterHandled(highlightedElement);
+        return !LazyGetterHandler.isLazyGetterIdentifierHandled(highlightedElement);
       }
     },
 
@@ -181,7 +181,7 @@ public class LombokHighlightErrorFilter implements HighlightInfoFilter {
 
       @Override
       public boolean accept(@NotNull PsiElement highlightedElement) {
-        return !LazyGetterHandler.isLazyGetterHandled(highlightedElement)
+        return !LazyGetterHandler.isLazyGetterIdentifierHandled(highlightedElement)
           || !LazyGetterHandler.isInitializedInConstructors(highlightedElement);
       }
     },
@@ -195,6 +195,21 @@ public class LombokHighlightErrorFilter implements HighlightInfoFilter {
       @Override
       public boolean accept(@NotNull PsiElement highlightedElement) {
         return !EqualsAndHashCodeCallSuperHandler.isEqualsAndHashCodeCallSuperDefault(highlightedElement);
+      }
+    },
+
+    INCOMPATIBLE_TYPES_ASSIGNMENT(HighlightSeverity.ERROR, CodeInsightColors.ERRORS_ATTRIBUTES) {
+
+      private final Pattern pattern = Pattern.compile("Incompatible types. Found: '.*', required: 'java.util.concurrent.atomic.AtomicReference<java.lang.Object>'");
+
+      @Override
+      public boolean descriptionCheck(@Nullable String description) {
+        return description != null && pattern.matcher(description).matches();
+      }
+
+      @Override
+      public boolean accept(@NotNull PsiElement highlightedElement) {
+        return !LazyGetterHandler.isLazyGetterHandled(highlightedElement);
       }
     };
 
